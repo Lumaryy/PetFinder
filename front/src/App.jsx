@@ -1,10 +1,18 @@
-import React from "react"
-import Login from "./components/Login.jsx";
+import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import LoginPage from './pages/LoginPages'
+import ListarPages from './pages/ListarPages'
+import AnadirPages from './pages/AñadirPages'
 
-export default function App() {
+function App() {
+
   return (
-    <div>
-        <Login />
-    </div>
+    <Routes>
+      <Route path='/' element={<LoginPage/>}/>
+      <Route path='/ListarMascotas' element={<ListarPages/>}/>
+      <Route path='/AnadirMascotas' element={<AnadirPages/>}/>
+  </Routes>
   )
 }
+
+export default App
