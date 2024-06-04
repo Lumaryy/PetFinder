@@ -1,22 +1,28 @@
-import express from "express"; 
-import bodyParser from "body-parser";
-import UserRouter from "./src/routers/UsersRoutes.js";
-import conexion from "./src/database/conexion.js";
- 
+import express from 'express'
+import bodyParser from 'body-parser'
+import conexion from './src/database/conexion.js'
+import userRoute from './src/routers/UsersRoutes.js'
+import raceRoute from './src/routers/RacesRoutes.js'
+import categoryRoute from './src/routers/CategoriesRoutes.js'
+import genderRoute from './src/routers/GendersRoutes.js'
+import petRoute from './src/routers/PetsRoutes.js'
 
+const servidor = express()
+servidor.use(express.json())
 
-const servidor = express(); 
-servidor.use(bodyParser.json());
-servidor.use(bodyParser.urlencoded({ extended: true }));
-servidor.set('view engine', 'ejs');
-servidor.set('views', './views');
-servidor.use(express.static('./public')); 
+const port = 3000
 
-conexion();
+conexion()
 
+servidor.use(bodyParser.json({ limit: "20mb" }))
+servidor.use(bodyParser.urlencoded({ limit: "20mb", extended: true }))
 
-servidor.use("/usuario", UserRouter);
+servidor.use('/user', userRoute)
+servidor.use('/raza', raceRoute)
+servidor.use('/categoria', categoryRoute)
+servidor.use('/genero', genderRoute)
+servidor.use('/mascota', petRoute)
 
-servidor.listen(3000, () => {
-    console.log("servidor escuchando desde el puerto 3000");
-});
+servidor.listen(port, () => {
+    console.log(`listening on http://localhost:${port}`)
+})

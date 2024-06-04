@@ -1,12 +1,12 @@
 import React from 'react'
-import ListarMascotas from '../components/ListarMascotas'
+import Listar_Component from '../components/ListarMascotas.jsx'
 
-const ListarPages = () => {
+const ListarMascotas = () => {
     return (
         <div className='flex items-center justify-center'>
-            <ListarMascotas/>
+            <Listar_Component/>
         </div>
     )
 }
 
-export default ListarPages
+export default ListarMascotas

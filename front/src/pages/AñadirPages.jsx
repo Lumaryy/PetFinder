@@ -1,12 +1,12 @@
 import React from 'react'
-import AnadirMascotas from '../components/AñadirMascotas'
+import Anadir_Component from '../components/AñadirMascotas.jsx'
 
-const AnadirPages = () => {
+const AnadirMascotas = () => {
     return (
         <div className='flex items-center justify-center'>
-            <AnadirMascotas/>
+            <Anadir_Component/>
         </div>
     )
 }
 
-export default AnadirPages
+export default AnadirMascotas

@@ -1,12 +1,12 @@
 import React from "react"
-import Login from "../components/Login"
+import Login_Component from "../components/Login.jsx"
 
-const LoginPage = () => {
+const Login = () => {
     return (
         <div className='flex items-center justify-center'>
-            <Login />
+            <Login_Component />
         </div>
     )
 }
 
-export default LoginPage
+export default Login

@@ -1,12 +1,12 @@
 import React from 'react'
-import EditarMascota from '../components/Editarmascota.jsx'
+import Editar_Component from '../components/Editarmascota.jsx'
 
-const EditarPages = () => {
+const EditarMascotas = () => {
     return (
         <div className='flex items-center justify-center'>
-            <EditarMascota/>
+            <Editar_Component/>
         </div>
     )
 }
 
-export default EditarPages
+export default EditarMascotas

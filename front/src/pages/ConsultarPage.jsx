@@ -1,12 +1,12 @@
 import React from 'react'
-import ConsultarMascota from '../components/ConsultarMascota.jsx'
+import Consultar_Component from '../components/ConsultarMascota.jsx'
 
-const ConsultaPages = () => {
+const ConsultarMascotas = () => {
     return (
         <div className='flex items-center justify-center'>
-            <ConsultarMascota/>
+            <Consultar_Component/>
         </div>
     )
 }
 
-export default ConsultaPages
+export default ConsultarMascotas
