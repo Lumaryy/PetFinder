@@ -1,14 +1,15 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const raceSchema = new mongoose.Schema({
+
+const razasSchemas = new mongoose.Schema({
     name: {
         type: String,
-        maxlength: 32,
         required: true,
-        unique: true
+        lowercase: true,
     }
 })
 
-const raceModel = mongoose.model('races', raceSchema)
+
+const raceModel =mongoose.model('razas',razasSchemas)
 
 export default raceModel

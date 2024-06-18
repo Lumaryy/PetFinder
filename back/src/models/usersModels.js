@@ -1,34 +1,23 @@
-import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    fullname: {
+
+const usuarioSchema = new mongoose.Schema({
+    fullName: {
         type: String,
-        maxlength: 32,
         required: true
     },
     email: {
         type: String,
-        maxlength: 32,
         required: true,
-        unique: true
+        unique: [true, 'El correo está duplicado'],
+        maxlength: [100, 'El correo no puede exceder los 100 caracteres'],
     },
     password: {
         type: String,
-        maxlength:64,
         required: true
     }
 })
 
-const userModel = mongoose.model('users', userSchema)
+const  userModel =mongoose.model('user',usuarioSchema)
 
 export default userModel
-
-export const encriptarPassword = async (password) => {
-    const passwordEncriptada = await bcrypt.hash(password, 8)
-        return passwordEncriptada
-}
-
-export const compararPassword = async (texto, passwordEncriptada) => {
-    return await bcrypt.compararPassword(texto, passwordEncriptada)
-}

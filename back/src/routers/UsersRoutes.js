@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { registrarUsuario, listarUsuarios } from '../controllers/UsersControllers.js'
+import { RegistraUsuario,ListarUsuarios } from '../controllers/UsersControllers.js'
 
 const userRoute = Router()
 
-userRoute.get('/listar', listarUsuarios)
-userRoute.post('/registrar', registrarUsuario)
+userRoute.get('/listar', ListarUsuarios)
+userRoute.post('/registrar', RegistraUsuario)
 
 export default userRoute

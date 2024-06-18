@@ -1,22 +1,32 @@
 import categoryModel from '../models/categoriesModels.js'
 
-export const registrarCategoria = async (req, res) => {
+
+export const RegistrarCategoria = async (req, res) => {
     try {
-        const data = req.body
-        const docs = await categoryModel.create(data)
-        res.send({ data: docs })
-    } 
-    catch (error) {
-        res.status(500).send({ error: error.message })
+        const { nombreCategoria } = req.body
+
+        const objCategoria = new categoryModel({
+            name: nombreCategoria
+        })
+
+        const save = await objCategoria.save()
+
+        return res.status(201).json({ raza: save })
+
+    } catch (error) {
+        return res.status(500).json({ mensaje: "error en el servidor", error })
     }
 }
 
-export const listarCategoria = async (req, res) => {
+export const getCategoria = async (req, res) => {
     try {
-        const race = await categoryModel.find({})
-        res.send(race)
-    }
-    catch (error) {
-        res.status(500).send({ error: error.message })
+        const categoria = await categoryModel.find({})
+
+        if (categoria.length === 0) return res.status(404).json({ mensaje: "no encontraron categorias" })
+
+        return res.status(200).json(categoria)
+
+    } catch (error) {
+        return res.status(500).json({ mensaje: "error en el servidor", error })
     }
 }

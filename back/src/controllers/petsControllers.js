@@ -1,88 +1,122 @@
 import petModel from '../models/petsModels.js'
-import multer from 'multer'
-
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {cb(null, 'public/img')},
-    filename: function(req, file, cb) {cb(null, file.originalname)}
-})
-
-const upload = multer({ storage: storage })
-export const cargarImagen = upload.single('img')
 
 export const registrarMascota = async (req, res) => {
     try {
-        let {name, race_id, category_id, gender_id} = req.body
-        let img = req.file.originalname
+      const { name, raza_id, categorias_id, generos_id } = req.body;
+      const foto = req.file.originalname;
+  
+      const newMascota = await petModel({
+        name,
+        raza_id,
+        categorias_id,
+        generos_id,
+        foto: foto,
+      });
 
-        const data = new petModel ({
-            name,
-            race_id,
-            category_id,
-            photo: img,
-            gender_id
-        })
-
-        await data.save()
-        res.status(200).json({ "message": "Se registró con éxito" })
+      const save = await newMascota.save();
+  
+      return res.status(200).json(save);
+    } catch (error) {
+      return res.status(500).json({ mensaje: "error en el servidor" + error });
     }
-    catch (error) {
-        res.status(500).json({ "error": "Error en el servidor" + error })
-    }
-}
+};
+export const actualizarMascota = async (req, res) => {
+  try {
+    console.log(req.body);
+    const {name, raza_id, categorias_id, generos_id } = req.body;
+    const id = req.params.id;
 
-export const listarMascota = async (req, res) => {
+    //poder obtener la imagen que llega del front
+    const foto = req.file.originalname;
+
+    const response = await petModel.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          name,
+          raza_id,
+          categorias_id,
+          generos_id,
+          foto,
+        },
+      },
+      { new: true }
+    );
+
+    if (response)
+      return res.status(200).json({ mensaje: "mascota actualizada" });
+  } catch (error) {
+    return res.status(500).json({ mensaje: "error en el servidor" + error });
+  }
+};
+
+export const ListarMascota = async (req, res) => {
     try {
-        const race = await petModel.find({})
-        res.send(race)
+      const mascotas = await petModel.find({}, "name raza_id foto")
+        .populate("raza_id", "name _id")
+        .exec();
+      // si el array que se obtiene, la longitud es 0 retorana  mensaje: "no encontraron mascotas en la base de datos"
+      if (mascotas.length === 0)
+        return res
+          .status(404)
+          .json({ mensaje: "no encontraron mascotas en la base de datos" });
+  
+      return res.status(200).json(mascotas);
+    } catch (error) {
+      return res.status(500).json({ mensaje: "error en el servidor" + error });
     }
-    catch (error) {
-        res.status(500).json({ "error": "Error en el servidor" + error })
-    }
-}
+  };
 
-export const eliminarMascota = async (req, res) => {
+  
+  export const ListarMascotasId = async (req, res) => {
     try {
-        let {id} = req.params
-        const result = await petModel.findByIdAndDelete(id)
-        if(result) {
-            res.status(200).json({ "message": "Se eliminó con éxito" })
-        }
-        else {
-            res.status(404).json({ "error": "No se eliminó" })
-        }
+      const idMascota = req.params.id; 
+      const mascotas = await petModel.findById(idMascota, "name raza_id foto")
+        .populate("raza_id", "name")
+        .populate("categorias_id", "name")
+        .populate("generos_id", "name")
+  
+      if (!mascotas)
+        return res.status(404).json({ mensaje: "no encontraron mascotas" });
+  
+      const mascota = {
+        id: mascotas._id,
+        nombre: mascotas.name,
+        razas: mascotas.raza_id,
+        categorias: mascotas.categorias_id,
+        generos: mascotas.generos_id,
+        foto: mascotas.foto,
+      };
+      return res.status(200).json({ mascota: mascota });
+    } catch (error) {
+      return res.status(500).json({ mensaje: "error en el servidor" + error });
     }
-    catch (error) {
-        res.status(500).json({ "error": "Error en el servidor" + error })
-    }
-}
+  };
 
-export const actualizarMascota = async (req,res) => {
+
+  export const eliminarMascota = async (req, res) => {
     try {
-        let {id} = req.params
-        let {name, race_id, category_id, gender_id} = req.body
-
-        let img = ''
-        if (req.file) {
-            img = req.file.filename
-        }
-
-        let update = []
-        if (name) update.name = name
-        if (race_id) update.race_id = race_id
-        if (category_id) update.category_id = category_id
-        if (gender_id) update.gender_id = gender_id
-        if (img) update.photo = img
-
-        const result = await petModel.findByIdAndUpdate(id, {$set: update}, {new: true})
-
-        if(result) {
-            res.status(200).json({ "message": "Se actualizó con éxito" })
-        }
-        else {
-            res.status(404).json({ "error": "No se actualizó" })
-        }
+      const id = req.params.id;
+      const response = await petModel.deleteOne({ _id: id });
+  
+      if (response.deletedCount === 0)
+        return res
+          .status(404)
+          .json({ mensaje: "No se encontro mascota para eliminar" });
+  
+      res.status(200).json({ mensaje: "mascota eliminada" });
+    } catch (error) {
+      return res.status(500).json({ mensaje: "error en el servidor" + error });
     }
-    catch (error) {
-        res.status(500).json({ "error": "Error en el servidor" + error })
+  };
+  
+
+  export const ListarMascotas=async(req,res)=>{
+    try {
+        const users=await petModel.find()
+
+        res.status(200).json(users)
+    } catch (error) {
+        return res.status(500).json({error: error.message})
     }
 }

@@ -1,31 +1,32 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Schema.Types
 
-const petSchema = new mongoose.Schema({
+const mascotasSchema = mongoose.Schema({
     name: {
         type: String,
-        maxlength:32,
+        required: true,
+        lowercase: true,
+    },
+    raza_id: {
+        type: ObjectId,
+        ref: 'razas',
         required: true
     },
-    race_id: {
-        type: mongoose.Schema.Types.ObjectId,   
-        ref: 'races',
+    categorias_id: {
+        type: ObjectId,
+        ref: 'categorias',
         required: true
     },
-    category_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'categories',
+    generos_id: {
+        type: ObjectId,
+        ref: 'generos',
         required: true
     },
-    photo: {
+    foto: {
         type: String,
-        maxlength: 64
     },
-    gender_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'genders'
-    }
 })
 
-const petModel = mongoose.model('pets', petSchema)
+const petModel =mongoose.model('mascotas',mascotasSchema)
 
 export default petModel

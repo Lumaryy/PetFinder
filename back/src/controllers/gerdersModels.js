@@ -1,22 +1,32 @@
 import genderModel from '../models/gendersModels.js'
 
-export const registrarGenero = async (req, res) => {
+export const RegistrarGenero = async (req, res) => {
     try {
-        const data = req.body
-        const docs = await genderModel.create(data)
-        res.send({ data: docs })
-    } 
-    catch (error) {
-        res.status(500).send({ error: error.message })
+
+        const { nombreGenero } = req.body
+
+        const ObjGenero = new gendersModel({
+            name: nombreGenero
+        })
+
+        const save = await ObjGenero.save()
+
+        return res.status(201).json({ genero: save })
+
+    } catch (error) {
+        return res.status(500).json({ mensaje: "error en el servidor", error })
     }
 }
 
-export const listarGenero = async (req, res) => {
+export const getGenero = async (req, res) => {
     try {
-        const race = await genderModel.find({})
-        res.status(200).json(race)
-    }
-    catch (error) {
-        res.status(500).send({ error: error.message })
+        const genero = await genderModel.find({})
+
+        if (genero.length === 0) return res.status(404).json({ mensaje: "no encontraron generos" })
+
+        return res.status(200).json(genero)
+
+    } catch (error) {
+        return res.status(500).json({ mensaje: "error en el servidor", error })
     }
 }

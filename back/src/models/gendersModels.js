@@ -1,14 +1,14 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const genderSchema = new mongoose.Schema({
+
+const generosSchemas = new mongoose.Schema({
     name: {
         type: String,
-        maxlength: 32,
         required: true,
-        unique: true
+        lowercase: true,
     }
 })
 
-const genderModel = mongoose.model('genders', genderSchema)
+const genderModel =mongoose.model('generos',generosSchemas)
 
 export default genderModel
