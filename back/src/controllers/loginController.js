@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import userModel from '../models/usersModel'
+import userModel from '../models/usersModels.js'
 
 
 import { compare } from "../config/bcrypt.js"

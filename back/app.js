@@ -3,6 +3,7 @@ import bodyParser from "body-parser"
 import cors from 'cors'
 
 import ConexionMongo from './src/database/conexion.js'
+import LoginRouter from "./src/routers/loginRoutes.js"
 import userRoute from './src/routers/UsersRoutes.js'
 import raceRoute from './src/routers/RacesRoutes.js'
 import categoryRoute from './src/routers/CategoriesRoutes.js'
